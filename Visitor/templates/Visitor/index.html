@@ -1,0 +1,37 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+
+<!-- Intro Banner
+================================================== -->
+<!-- add class "disable-gradient" to enable consistent background overlay -->
+<div class="intro-banner" data-background-image="images/home-background.jpg">
+	<div class="container">
+		
+		<!-- Intro Headline -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="banner-headline">
+				{% if msg %}
+					<a style="color: blue; text-align: center;">{{ msg }}</a>
+				{% endif %}
+					<h3>
+						<strong>Creativity takes courage.</strong>
+						<br>
+						<span>Art is unquestionably one of the purest and highest elements in human happiness. It trains the mind through the eye, and the eye through the mind. As the sun colours flowers, so does art colour life..</span>
+					</h3>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+{% include 'Visitor/basefooter.html' %}
+{% block footer %}
+{% endblock %}
+
+{% endblock %}

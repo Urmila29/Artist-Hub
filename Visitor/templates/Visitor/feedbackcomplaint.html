@@ -1,0 +1,128 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="gradient">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<h2>Contact</h2>
+
+				<!-- Breadcrumbs -->
+				<nav id="breadcrumbs" class="dark">
+					<ul>
+						<li><a href="{% url 'indexPage' %}">Home</a></li>
+						<li><a href="#">Pages</a></li>
+						<li>Feedback | Complaints</li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Content
+================================================== -->
+
+<!-- Container -->
+<div class="container">
+	<div class="row">
+
+		<div class="col-xl-12">
+			<div class="contact-location-info margin-bottom-50">
+				<div class="contact-address">
+					<ul>
+						<li class="contact-address-headline">Our Office</li>
+						<li>Maninagar</li>
+						<li>Phone (123) 123-456</li>
+						<li><a href="#">mail@example.com</a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xl-8 col-lg-8 offset-xl-2 offset-lg-2">
+{% if msg %}
+<a style="color: blue; text-align:center;">{{ msg }}</a>
+{% endif %}
+{% if errmsg %}
+<a style="color: blue; text-align:center;">{{ errmsg }}</a>
+{% endif %}
+			<section id="contact" class="margin-bottom-60">
+				<h3 class="headline margin-top-15 margin-bottom-35">Any questions? Feel free to contact us!</h3>
+
+				<form action="{% url 'submitFeedbackAndComplaints' %}" method="POST" name="contactform" id="contactform" autocomplete="on">{% csrf_token %}
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-with-icon-left">
+								<input class="with-border" name="name" type="text" id="name" placeholder="Your Name" required="required" />
+								<i class="icon-material-outline-account-circle"></i>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-with-icon-left">
+								<input class="with-border" name="email" type="email" id="email" placeholder="Email Address" pattern="^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$" required="required" />
+								<i class="icon-material-outline-email"></i>
+							</div>
+						</div>
+					</div>
+
+					<div class="input-with-icon-left">
+						<input class="with-border" name="subject" type="text" id="subject" placeholder="Subject" required="required" />
+						<i class="icon-material-outline-assignment"></i>
+					</div>
+
+					<div>
+						<textarea class="with-border" name="comments" cols="40" rows="5" id="comments" placeholder="Message" spellcheck="true" required="required"></textarea>
+					</div>
+
+					<button type="submit" class="submit button margin-top-15" form="contactform" id="submit" value="Submit Message" />Submit</button>
+
+				</form>
+			</section>
+
+		</div>
+
+	</div>
+</div>
+<!-- Container / End -->
+
+{% include 'Visitor/basefooter.html' %}
+{% block footer %}
+{% endblock %}
+
+<!-- Scripts
+================================================== -->
+<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+<script>
+// Snackbar for user status switcher
+$('#snackbar-user-status label').click(function() { 
+	Snackbar.show({
+		text: 'Your status has been changed!',
+		pos: 'bottom-center',
+		showAction: false,
+		actionText: "Dismiss",
+		duration: 3000,
+		textColor: '#fff',
+		backgroundColor: '#383838'
+	}); 
+}); 
+</script>
+
+<!-- Google API & Maps -->
+<!-- Geting an API Key: https://developers.google.com/maps/documentation/javascript/get-api-key -->
+<script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
+<script src="js/infobox.min.js"></script>
+<script src="js/markerclusterer.js"></script>
+<script src="js/maps.js"></script>
+
+{% endblock %}

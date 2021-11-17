@@ -1,0 +1,70 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="gradient">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<h2>Email Verification</h2>
+
+				<!-- Breadcrumbs -->
+				<nav id="breadcrumbs" class="dark">
+					<ul>
+						<li><a href="{% url 'indexPage' %}">Home</a></li>
+						<li>Email Verification</li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Page Content
+================================================== -->
+<div class="container">
+	<div class="row">
+		<div class="col-xl-5 offset-xl-3">
+
+
+			<div class="login-register-page">
+				<!-- Welcome Text -->
+				<div class="welcome-text">
+					<h3>Type your correct E-mail address.</h3>
+				</div>
+				{% if errmsg %}
+					<a style="color: red; text-align: center;">{{ errmsg }}</a>
+				{% endif %}
+				<!-- Form -->
+				<form action="{% url 'emailVerificationPage' %}" method="POST" id="login-form">{% csrf_token %}
+					<div class="input-with-icon-left">
+						<i class="icon-material-baseline-mail-outline"></i>
+						<input type="email" class="input-text with-border" name="emailaddress" id="emailaddress" placeholder="Email Address" required/>
+					</div>
+                    <!-- Button -->
+					<button class="button full-width button-sliding-icon ripple-effect margin-top-10" type="submit" form="login-form">Verify Email <i class="icon-material-outline-arrow-right-alt"></i></button>
+				
+				</form>
+				
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<!-- Spacer -->
+<div class="margin-top-70"></div>
+<!-- Spacer / End-->
+
+{% include 'Visitor/basefooter.html' %}
+{% block footer %}
+{% endblock %}
+
+{% endblock %}

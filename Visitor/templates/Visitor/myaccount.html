@@ -1,0 +1,221 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+<!-- Titlebar
+================================================== -->
+{% if msg %}
+	<a style="color: blue; text-align: center;">{{ msg }}</a>
+{% endif %}
+<div class="single-page-header" data-background-image="{% static 'assets/images/single-company.jpg' %}">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="single-page-header-inner">
+					<div class="left-side">
+						<div class="header-image"><img src="media/{{ user.ProfilePic }}" alt=""></div>
+						<div class="header-details">
+							<h3>{{ user.Firstname }} {{ user.Lastname }}<span>{{ user.Profession }}</span></h3>
+							<ul>
+								<li><div class="star-rating" data-rating="4.9"></div></li>
+								<li>{{ user.Nationality }}</li>
+								<li><div class="verified-badge-with-title">Verified</div></li>
+							</ul>
+						</div>
+					</div>
+					<div class="right-side">
+						<!-- Breadcrumbs -->
+						<nav id="breadcrumbs" class="white">
+							<ul>
+								<li><a href="{% url 'indexPage' %}">Home</a></li>
+								<li><a href="{% url 'userProfilePage' %}">My Profile</a></li>
+								<li>{{ user.Firstname }}</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Page Content
+================================================== -->
+<div class="container">
+	<div class="row">
+		
+		<!-- Content -->
+		<div class="col-xl-8 col-lg-8 content-right-offset">
+
+			<div class="single-page-section">
+				<h3 class="margin-bottom-25">Introduction about yourself</h3>
+				<p>{{ user.Myself }}
+
+				</div>
+			
+			<!-- Boxed List -->
+			<div class="boxed-list margin-bottom-60">
+				<div class="boxed-list-headline">
+					<h3><i class="icon-material-outline-business-center"></i> About</h3>
+				</div>
+
+				<div class="listings-container compact-list-layout">
+					
+					<!-- Job Listing -->
+					<div class="job-listing">
+
+						<!-- Job Listing Details -->
+						<div class="job-listing-details">
+
+							<!-- Details -->
+							<div class="job-listing-description">
+								<h3 class="job-listing-title">Email Address</h3>
+
+								<!-- Job Listing Footer -->
+								<div class="job-listing-footer">
+									<ul>
+										<li><i class="icon-material-outline-business-center"></i> {{ request.session.emailaddress }}</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+
+						<!-- Bookmark -->
+						<span class="bookmark-icon"></span>
+					</div>
+
+					<!-- Job Listing -->
+					<div class="job-listing">
+
+						<!-- Job Listing Details -->
+						<div class="job-listing-details">
+
+							<!-- Details -->
+							<div class="job-listing-description">
+								<h3 class="job-listing-title">Mobile Number</h3>
+
+								<!-- Job Listing Footer -->
+								<div class="job-listing-footer">
+									<ul>
+										<li><i class="icon-material-outline-business-center"></i> {{ user.Mobileno }}</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+
+						<!-- Bookmark -->
+						<span class="bookmark-icon"></span>
+					</div>	
+
+					<!-- Job Listing -->
+					<div class="job-listing">
+
+						<!-- Job Listing Details -->
+						<div class="job-listing-details">
+
+							<!-- Details -->
+							<div class="job-listing-description">
+								<h3 class="job-listing-title">Birthdate</h3>
+
+								<!-- Job Listing Footer -->
+								<div class="job-listing-footer">
+									<ul>
+										<li><i class="icon-material-outline-business-center"></i> {{ user.Birthdate }}</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+
+						<!-- Bookmark -->
+						<span class="bookmark-icon"></span>
+					</div>
+
+					<!-- Job Listing -->
+					<div class="job-listing">
+
+						<!-- Job Listing Details -->
+						<div class="job-listing-details">
+
+							<!-- Details -->
+							<div class="job-listing-description">
+								<h3 class="job-listing-title">Gender</h3>
+
+								<!-- Job Listing Footer -->
+								<div class="job-listing-footer">
+									<ul>
+										<li><i class="icon-material-outline-business-center"></i> {{ user.Gender }}</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+
+						<!-- Bookmark -->
+						<span class="bookmark-icon"></span>
+					</div>
+				</div>
+
+			</div>
+			<!-- Boxed List / End -->
+		</div>
+		
+
+		<!-- Sidebar -->
+		<div class="col-xl-4 col-lg-4">
+			<div class="sidebar-container">
+
+				<!-- Location -->
+				<div class="sidebar-widget">
+					<h3>Location</h3>
+						<div><h4>Current Address</h4>
+							<div id="single-job-map-container">
+							<!-- <div id="singleListingMap" data-latitude="52.520007" data-longitude="13.404954" data-map-icon="im im-icon-Hamburger"></div> -->
+								<div id="streetView">{{ user.Currentaddr }}</div>
+							</div>
+						</div><br><br><br>
+						<div><h4>Permanent Address</h4>
+							<div id="single-job-map-container">
+							<!-- <div id="singleListingMap" data-latitude="52.520007" data-longitude="13.404954" data-map-icon="im im-icon-Hamburger"></div> -->
+								<div id="streetView">{{ user.Permanentaddr }}</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Spacer -->
+<div class="margin-top-15"></div>
+<!-- Spacer / End-->
+{% include 'Visitor/basefooter.html' %}
+{% block footer %}
+{% endblock %}
+
+
+<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+<script>
+// Snackbar for "place a bid" button
+$('#snackbar-place-bid').click(function() { 
+	Snackbar.show({
+		text: 'Your bid has been placed!',
+	}); 
+}); 
+
+
+// Snackbar for copy to clipboard button
+$('.copy-url-button').click(function() { 
+	Snackbar.show({
+		text: 'Copied to clipboard!',
+	}); 
+}); 
+</script>
+{% endblock %}

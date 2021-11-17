@@ -1,0 +1,251 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+
+<!-- Dashboard Container -->
+<div class="dashboard-container">
+
+	<!-- Dashboard Sidebar
+	================================================== -->
+	<div class="dashboard-sidebar">
+		<div class="dashboard-sidebar-inner" data-simplebar>
+			<div class="dashboard-nav-container">
+
+				<!-- Responsive Navigation Trigger -->
+				<a href="#" class="dashboard-responsive-nav-trigger">
+					<span class="hamburger hamburger--collapse" >
+						<span class="hamburger-box">
+							<span class="hamburger-inner"></span>
+						</span>
+					</span>
+					<span class="trigger-title">Dashboard Navigation</span>
+				</a>
+				
+				<!-- Navigation -->
+				<div class="dashboard-nav">
+					<div class="dashboard-nav-inner">
+						
+						<ul data-submenu-title="Start">
+							<li class="active"><a href="{% url 'dashboardPage' %}"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+							{% if request.session.role == 'Admin' %}
+							<li><a href="{% url 'allArtistPage' %}"><i class="icon-material-outline-rate-review"></i> All Artists</a></li>
+							<li><a href="{% url 'allVisitorPage' %}"><i class="icon-material-outline-rate-review"></i> All Visitors</a></li>
+							<li><a href="{% url 'allFeedbackAndComplaints' %}">Feedbacks | Complaints</a></li>
+
+						<ul data-submenu-title="Account">
+							<li><a href="{% url 'logOutPage' %}"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+							{% else %}
+
+							{% if request.session.role == 'Visitor' %}
+							<li><a href="{% url 'reviewsPage' pk=user.id %}"><i class="icon-material-outline-rate-review"></i> Give Reviews</a></li>
+							{% endif %}
+							{% if request.session.id %}
+							<li><a href="{% url 'allReviews' pk=user.id %}"><i class="icon-material-outline-rate-review"></i> All Reviews</a></li>
+							{% endif %}
+						</ul>
+
+						<ul data-submenu-title="Account">
+							<li><a href="{% url 'userProfilePage' %}"><i class="icon-material-outline-settings"></i> Settings</a></li>
+							<li><a href="{% url 'logOutPage' %}"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+							<li><a href="{% url 'deleteAccountPage' pk=user.admin_id %}"><i class="icon-material-outline-power-settings-new"></i> Delete Account</a></li>
+							{% endif %}
+
+						</ul>
+						
+					</div>
+				</div>
+				<!-- Navigation / End -->
+
+			</div>
+		</div>
+	</div>
+	<!-- Dashboard Sidebar / End -->
+
+
+	<!-- Dashboard Content
+	================================================== -->
+	<div class="dashboard-content-container" data-simplebar>
+		<div class="dashboard-content-inner" >
+			
+			<!-- Dashboard Headline -->
+			<div class="dashboard-headline">
+			{% if errmsg %}
+			<a style="color:red; text-align:center;">{{ errmsg }}</a>
+			{% endif %}
+				<h3>{% if request.session.role == 'Admin' %}Welcome Admin!{% else %}{{ user.Firstname }} {{ user.Lastname }}{% endif %}</h3>
+				<span>We are glad to see you again!</span>
+
+				<!-- Breadcrumbs -->
+				<nav id="breadcrumbs" class="dark">
+					<ul>
+						<li><a href="{% url 'indexPage' %}">Home</a></li>
+						<li>Dashboard</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- Headline -->
+		{% if request.session.role == 'Admin' %}
+		<div class="row">
+
+			<!-- Dashboard Box -->
+			<div class="col-xl-12">
+				<div class="dashboard-box margin-top-0">
+					<div class="headline">
+						<h3><i class="icon-material-outline-supervisor-account"></i> {{ msg }}</h3>
+					</div>
+					<div class="content">
+						<ul class="dashboard-box-list">
+							<li>
+								<!-- Overview -->
+								<div class="freelancer-overview manage-candidates">
+									<div class="freelancer-overview-inner">
+										<div class="freelancer-name">
+										{% for a in all %}
+											<h4><a href="#">{{ a.Firstname }} {{ a.Lastname }} <img class="flag" src="/media/{{ a.ProfilePic }}" alt="" title="Australia" data-tippy-placement="top"></a></h4>
+
+											<!-- Details -->
+											<span class="freelancer-detail-item"><a href="#"><i class="icon-feather-mail"></i> {{ a.admin.Email }}</a></span>
+											<span class="freelancer-detail-item"><i class="icon-feather-phone"></i> {{ a.Mobileno }}</span>
+
+											<!-- Rating -->
+											<div class="freelancer-rating">
+												<div>{{ a.Profession }}</div>
+											</div>
+
+											<!-- Buttons -->
+											<div class="buttons-to-right always-visible margin-top-25 margin-bottom-5">
+												<a href={% url 'deleteAccountPage' pk=a.admin_id %} class="button gray ripple-effect ico" title="Remove Candidate" data-tippy-placement="top"><i class="icon-feather-trash-2"></i></a>
+											</div>
+										{% endfor %}
+										{% for a in fc %}
+											<h4><a href="#">Username: {{ a.User_Name }}</a></h4>
+											<!-- Details -->
+											<span class="freelancer-detail-item"><a href="#"><i class="icon-feather-mail"></i>Email: {{ a.Email }}</a></span>
+											<span class="freelancer-detail-item">Comment Type: {{ a.Subject }}</span>
+
+											<!-- Rating -->
+											<div class="freelancer-rating">
+												<div>{{ a.Profession }}</div>
+											</div>
+
+											<!-- Buttons -->
+											<div class="buttons-to-right always-visible margin-top-25 margin-bottom-5">
+												Comment: <a href="#" data-tippy-placement="top">{{ a.Message }}</a>
+											</div>
+										{% endfor %}
+										</div>
+									</div>
+								</div>
+							
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<!-- Dashboard Content / End -->
+
+</div>
+<!-- Dashboard Container / End -->
+
+<!-- Scripts
+================================================== -->
+
+<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+<script>
+// Snackbar for user status switcher
+$('#snackbar-user-status label').click(function() { 
+	Snackbar.show({
+		text: 'Your status has been changed!',
+		pos: 'bottom-center',
+		showAction: false,
+		actionText: "Dismiss",
+		duration: 3000,
+		textColor: '#fff',
+		backgroundColor: '#383838'
+	}); 
+}); 
+</script>
+
+<!-- Chart.js // documentation: http://www.chartjs.org/docs/latest/ -->
+<script src="js/chart.min.js"></script>
+<script>
+	Chart.defaults.global.defaultFontFamily = "Nunito";
+	Chart.defaults.global.defaultFontColor = '#888';
+	Chart.defaults.global.defaultFontSize = '14';
+
+	var ctx = document.getElementById('chart').getContext('2d');
+
+	var chart = new Chart(ctx, {
+		type: 'line',
+
+		// The data for our dataset
+		data: {
+			labels: ["January", "February", "March", "April", "May", "June"],
+			// Information about the dataset
+	   		datasets: [{
+				label: "Views",
+				backgroundColor: 'rgba(42,65,232,0.08)',
+				borderColor: '#2a41e8',
+				borderWidth: "3",
+				data: [196,132,215,362,210,252],
+				pointRadius: 5,
+				pointHoverRadius:5,
+				pointHitRadius: 10,
+				pointBackgroundColor: "#fff",
+				pointHoverBackgroundColor: "#fff",
+				pointBorderWidth: "2",
+			}]
+		},
+
+		// Configuration options
+		options: {
+
+		    layout: {
+		      padding: 10,
+		  	},
+
+			legend: { display: false },
+			title:  { display: false },
+
+			scales: {
+				yAxes: [{
+					scaleLabel: {
+						display: false
+					},
+					gridLines: {
+						 borderDash: [6, 10],
+						 color: "#d8d8d8",
+						 lineWidth: 1,
+	            	},
+				}],
+				xAxes: [{
+					scaleLabel: { display: false },  
+					gridLines:  { display: false },
+				}],
+			},
+
+		    tooltips: {
+		      backgroundColor: '#333',
+		      titleFontSize: 13,
+		      titleFontColor: '#fff',
+		      bodyFontColor: '#fff',
+		      bodyFontSize: 13,
+		      displayColors: false,
+		      xPadding: 10,
+		      yPadding: 10,
+		      intersect: false
+		    }
+		},
+
+
+});
+
+</script>
+{% endblock %}

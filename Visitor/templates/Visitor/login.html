@@ -1,0 +1,98 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="gradient">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<h2>Log In</h2>
+
+				<!-- Breadcrumbs -->
+				<nav id="breadcrumbs" class="dark">
+					<ul>
+						<li><a href="{% url 'indexPage' %}">Home</a></li>
+						<li>Log In</li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Page Content
+================================================== -->
+<div class="container">
+	<div class="row">
+		<div class="col-xl-5 offset-xl-3">
+
+
+			<div class="login-register-page">
+				<!-- Welcome Text -->
+				<div class="welcome-text">
+					<h3>We're glad to see you again!</h3>
+					<span>Don't have an account? <a href="{% url 'registerPage' %}">Sign Up!</a></span>
+				</div>
+				{% if errmsg %}
+					<a style="color: red; text-align: center;">{{ errmsg }}</a>
+				{% endif %}
+				{% if msg %}
+					<a style="color: blue; text-align: center;">{{ msg }}</a>
+				{% endif %}
+				<!-- Form -->
+				<form action="{% url 'loginUserPage' %}" method="POST" id="login-form">{% csrf_token %}
+					<div class="account-type">
+						<div>
+							<input type="radio" value="Admin" name="role" id="admin-radio" class="account-type-radio" checked/>
+							<label for="admin-radio" class="ripple-effect-dark">Admin</label>
+						</div>
+
+						<div>
+							<input type="radio" value="Artist" name="role" id="artist-radio" class="account-type-radio"/>
+							<label for="artist-radio" class="ripple-effect-dark">Artist</label>
+						</div>
+
+						<div>
+							<input type="radio" value="Visitor" name="role" id="visitor-radio" class="account-type-radio"/>
+							<label for="visitor-radio" class="ripple-effect-dark">Visitor</label>
+						</div>
+					</div>
+					<div class="input-with-icon-left">
+						<i class="icon-material-baseline-mail-outline"></i>
+						<input type="text" class="input-text with-border" name="emailaddress" id="emailaddress" placeholder="Email Address" required/>
+					</div>
+
+					<div class="input-with-icon-left">
+						<i class="icon-material-outline-lock"></i>
+						<input type="password" class="input-text with-border" name="pwd" id="password" placeholder="Password" required/>
+					</div>
+					<a href="{% url 'forgotPasswordPage' %}" class="forgot-password">Forgot Password?</a>
+					<!-- Button -->
+					<button class="button full-width button-sliding-icon ripple-effect margin-top-10" type="submit" form="login-form">Log In <i class="icon-material-outline-arrow-right-alt"></i></button>
+				
+				</form>
+				
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<!-- Spacer -->
+<div class="margin-top-70"></div>
+<!-- Spacer / End-->
+
+{% include 'Visitor/basefooter.html' %}
+{% block footer %}
+{% endblock %}
+
+{% endblock %}

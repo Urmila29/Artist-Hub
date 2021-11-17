@@ -1,0 +1,82 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+
+<!--Tabs -->
+<div class="sign-in-form">
+
+    <ul class="popup-tabs-nav">
+    </ul>
+
+    <div class="popup-tabs-container">
+
+        <!-- Tab -->
+        <div class="popup-tab-content" id="tab2">
+            
+            <!-- Welcome Text -->
+            <div class="welcome-text">
+                <h3>Leave a Review</h3>
+                <span>Rate {{ review.artist.Firstname }} {{ review.artist.Lastname }}</a> for the event of {{ review.event.Event }}</a> </span>
+            </div>
+                
+            <!-- Form -->
+            <form action="{% url 'editReviews' pk=review.id %}" method="POST" id="leave-review-form">{% csrf_token %}
+
+                <div class="feedback-yes-no">
+                    <strong>Was this {{ review.artist.Profession }} booked on budget?</strong>
+                    <div class="radio">
+                        <input id="radio-1" name="radio" type="radio" value="True" {% if review.On_Budget == 1 %} checked {% endif %} required>
+                        <label for="radio-1"><span class="radio-label"></span> Yes</label>
+                    </div>
+
+                    <div class="radio">
+                        <input id="radio-2" name="radio" type="radio" value="False" {% if review.On_Budget == 0 %} checked {% endif %} required>
+                        <label for="radio-2"><span class="radio-label"></span> No</label>
+                    </div>
+                </div>
+
+                <div class="feedback-yes-no">
+                    <strong>Was this {{ review.artist.Profession }} available on time?</strong>
+                    <div class="radio">
+                        <input id="radio-3" name="radio2" type="radio" value="True" {% if review.On_Budget == 1 %} checked {% endif %} required>
+                        <label for="radio-3"><span class="radio-label"></span> Yes</label>
+                    </div>
+
+                    <div class="radio">
+                        <input id="radio-4" name="radio2" type="radio" value="False" {% if review.On_Budget == 0 %} checked {% endif %} required>
+                        <label for="radio-4"><span class="radio-label"></span> No</label>
+                    </div>
+                </div>
+
+                <div class="feedback-yes-no">
+                    <strong>Your Rating</strong>
+                    <div class="leave-rating">
+                        <input type="radio" name="rating" id="rating-radio-1" value="1" {% if review.Rate == 1 %} checked {% endif %} required>
+                        <label for="rating-radio-1" class="icon-material-outline-star"></label>
+                        <input type="radio" name="rating" id="rating-radio-2" value="2" {% if review.Rate == 2 %} checked {% endif %} required>
+                        <label for="rating-radio-2" class="icon-material-outline-star"></label>
+                        <input type="radio" name="rating" id="rating-radio-3" value="3" {% if review.Rate == 3 %} checked {% endif %} required>
+                        <label for="rating-radio-3" class="icon-material-outline-star"></label>
+                        <input type="radio" name="rating" id="rating-radio-4" value="4" {% if review.Rate == 4 %} checked {% endif %} required>
+                        <label for="rating-radio-4" class="icon-material-outline-star"></label>
+                        <input type="radio" name="rating" id="rating-radio-5" value="5" {% if review.Rate == 5 %} checked {% endif %} required>
+                        <label for="rating-radio-5" class="icon-material-outline-star"></label>
+                    </div><div class="clearfix"></div>
+                </div>
+
+                <textarea class="with-border" placeholder="{{ review.Review }}" name="message2" id="message2" cols="7" required></textarea>
+
+            </form>
+            
+            <!-- Button -->
+            <button class="button full-width button-sliding-icon ripple-effect" type="submit" form="leave-review-form">Leave a Review <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+        </div>
+
+    </div>
+</div>
+</div><!-- Leave a Review Popup / End -->
+{% endblock %}

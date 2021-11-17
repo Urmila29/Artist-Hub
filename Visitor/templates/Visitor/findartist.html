@@ -1,0 +1,193 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="gradient">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<h2>Find Artists</h2>
+
+				<!-- Breadcrumbs -->
+				<nav id="breadcrumbs" class="dark">
+					<ul>
+						<li><a href="{% url 'indexPage' %}">Home</a></li>
+						<li><a href="{% url 'findArtistsPage' %}">Find Artists</a></li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Page Content
+================================================== -->
+<div class="container">
+	<div class="row">
+		<div class="col-xl-12">
+			<form action="{% url 'findArtistsPage' %}" method="POST" id="artist-list-form">{% csrf_token %}
+				<select class="input-text with-border" name="choice" id="choice" onchange="choices()">
+					<option value="All">All</option>
+					<option value="Name">Name</option>
+					<option value="Location">Location</option>
+					<option value="Profession">Profession</option>
+					{% comment %} <option value="Rating">Rating</option> {% endcomment %}
+				</select>
+				<div class="letters-list" id="letters" style="display:none;">
+					<div class="account-type">
+						<div>
+							<input type="radio" value="A" name="letter" id="a-radio" class="account-type-radio" />
+							<label for="a-radio" class="ripple-effect-dark"> A</label>
+						</div>
+						<div>
+							<input type="radio" value="B" name="letter" id="b-radio" class="account-type-radio"/>
+							<label for="b-radio" class="ripple-effect-dark"> B</label>
+						</div>
+						<div>
+							<input type="radio" value="C" name="letter" id="c-radio" class="account-type-radio"/>
+							<label for="c-radio" class="ripple-effect-dark"> C</label>
+						</div>
+						<div>
+							<input type="radio" value="K" name="letter" id="k-radio" class="account-type-radio"/>
+							<label for="k-radio" class="ripple-effect-dark"> K</label>
+						</div>
+						<div>
+							<input type="radio" value="U" name="letter" id="u-radio" class="account-type-radio"/>
+							<label for="u-radio" class="ripple-effect-dark"> U</label>
+						</div>
+					</div>
+				</div>
+				<div id="place" style="display:none;">
+					<select class="input-text with-border" name="placename" required>
+						<option value="India" selected>India</option>
+						<option value="Belize">Belize</option>
+						<option value="USA">USA</option>
+					</select>
+				</div>
+				<div id="prof" style="display:none;">
+					<input type="text" name="profession" placeholder="Profession" required/>
+				</div>
+				{% comment %} <div id="rates" style="display:none;">
+					<div style="text-align: center;">
+						<a href="#" name="rates" value="1"><h1>1</a>
+						<a href="#" name="rates" value="2">2</a>
+						<a href="#" name="rates" value="3">3</a>
+						<a href="#" name="rates" value="4">4</a>
+						<a href="#" name="rates" value="5">5</h1></a>
+					</div>
+				</div> {% endcomment %}
+				<!-- Button -->
+				<button type="submit" onclick="buttonevent()" class="button full-width button-sliding-icon ripple-effect margin-top-10">Search Artists <i class="icon-material-outline-arrow-right-alt"></i></button>
+			</form>
+		</div>
+		<div class="col-xl-12">
+		{% if errmsg %}
+			<br><a style="color: red; text-align: center;">{{ errmsg }}</a>
+		{% endif %}
+		</div>
+		{% for i in artists %}
+		<div class="col-xl-12">
+			<div class="companies-list">
+				<a href="{% url 'bookArtistPage' pk=i.id %}" class="company">
+					<div class="company-inner-alignment">
+						<span class="company-logo"><img src="media/{{ i.ProfilePic }}" alt=""></span>
+						<h4>{{ i.Firstname }} {{ i.Lastname }}</h4>
+						<span> {{ i.Profession }}</span><br>
+						Current Address: <span> {{ i.Currentaddr }}</span><br>
+						Permanent Address: <span> {{ i.Permanentaddr }}</span><br>
+						<div class="star-rating" data-rating="3.5"></div>
+						<div>
+							<button type="submit" class="button full-width button-sliding-icon ripple-effect margin-top-10">Book Artist <i class="icon-material-outline-arrow-right-alt"></i></button>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+
+<!-- Spacer -->
+<div class="margin-top-70"></div>
+<!-- Spacer / End-->
+
+{% include 'Visitor/basefooter.html' %}
+{% block footer %}
+{% endblock %}
+
+<!-- Scripts
+================================================== -->
+<script>
+	function choices() {
+		var c = document.getElementsById('choice');
+		var d = document.getElementById('place');
+		if 
+		d.style.display = c.value == "Location" ? "block" : "none";
+	}
+</script>
+<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+<script>
+// Snackbar for user status switcher
+$('#snackbar-user-status label').click(function() { 
+	Snackbar.show({
+		text: 'Your status has been changed!',
+		pos: 'bottom-center',
+		showAction: false,
+		actionText: "Dismiss",
+		duration: 3000,
+		textColor: '#fff',
+		backgroundColor: '#383838'
+	}); 
+}); 
+</script>
+<script>
+	function choices(){
+		var a = document.getElementById("choice").value;
+		if(a==="Location"){
+			document.getElementById('place').style.display="block";
+			document.getElementById('letters').style.display="none";
+			document.getElementById('prof').style.display="none";
+			document.getElementById('rates').style.display="none";
+		}
+		else if(a==="Name"){
+			document.getElementById('letters').style.display="block";
+			document.getElementById('place').style.display="none";
+			document.getElementById('prof').style.display="none";
+			document.getElementById('rates').style.display="none";
+		}
+		else if(a==="Profession"){
+			document.getElementById('prof').style.display="block";
+			document.getElementById('place').style.display="none";
+			document.getElementById('letters').style.display="none";
+			document.getElementById('rates').style.display="none";
+		}
+		else if(a==="Rating"){
+			document.getElementById('rates').style.display="block";
+			document.getElementById('letters').style.display="none";
+			document.getElementById('prof').style.display="none";
+			document.getElementById('place').style.display="none";
+		}
+		else{
+			document.getElementById('letters').style.display="none";
+			document.getElementById('prof').style.display="none";
+			document.getElementById('rates').style.display="none";
+			document.getElementById('place').style.display="none";
+		}
+
+	}
+</script>
+<script>
+	function buttonevent(){
+		document.getElementById("artist-list-form").submit();
+}
+</script>
+{% endblock %}

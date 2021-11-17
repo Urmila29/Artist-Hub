@@ -1,0 +1,149 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="gradient">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<h2>Payment</h2>
+
+				<!-- Breadcrumbs -->
+				<nav id="breadcrumbs" class="dark">
+					<ul>
+						<li><a href="{% url 'indexPage' %}">Home</a></li>
+						<li><a href="#">Requests</a></li>
+						<li>Payment</li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Content
+================================================== -->
+<!-- Container -->
+<div class="container">
+	<div class="row">
+		<div class="col-xl-8 col-lg-8 content-right-offset">
+
+			<!-- Hedline -->
+			<h3 class="margin-top-50">Payment Method</h3>
+
+			<!-- Payment Methods Accordion -->
+			<div class="payment margin-top-30">
+
+				<div class="payment-tab payment-tab-active">
+					<div class="payment-tab-trigger">
+					</div>
+
+					<div class="payment-tab-content">
+						<form action="{% url 'paymentSuccessPage' %}" method="POST" id="process-done-form">{% csrf_token %}
+							<div class="form-group mb-3">
+								<label>Amount</label>
+								<input class="form-control" type="number" required=""  name="amt" placeholder="Enter your password" pattern="[0-9]+([\.,][0-9]+)?">
+							</div>
+
+							<div class="form-group mb-0 text-center">
+								<input class="btn btn-primary btn-block" type="button" value="Pay" id="rzp-button1">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Payment Methods Accordion / End -->
+		
+			<a href="pages-order-confirmation.html" class="button big ripple-effect margin-top-40 margin-bottom-65">Proceed Payment</a>
+		</div>
+
+
+		<!-- Summary -->
+		<div class="col-xl-4 col-lg-4 margin-top-0 margin-bottom-60">
+			
+			<!-- Summary -->
+			<div class="boxed-widget summary margin-top-0">
+				<div class="boxed-widget-headline">
+					<h3>Summary</h3>
+				</div>
+				<div class="boxed-widget-inner">
+					<ul>
+						<li>Booked Artist <span>{{ user.artist.Firstname }} {{ user.artist.Lastname }}</span></li>
+						<li>For Event <span>{{ user.Event }}</span></li>
+						<li class="total-costs">Paid Amount <span>Succesfull..!!</span></li>
+					</ul>
+				</div>
+			</div>
+			<!-- Summary / End -->
+
+			<!-- Checkbox -->
+			<div class="checkbox margin-top-30">
+				<input type="checkbox" id="two-step">
+				<label for="two-step"><span class="checkbox-icon"></span>  I agree to the <a href="#">Terms and Conditions</a> and the <a href="#">Automatic Renewal Terms</a></label>
+			</div>
+		</div>
+
+	</div>
+</div>
+<!-- Container / End -->
+
+{% include 'Visitor/basefooter.html' %}
+{% block footer %}
+{% endblock %}
+
+<!-- Scripts
+================================================== -->
+ <script>
+        var options = {
+            "key": "rzp_test_c9INlCRgs3if3b", // Enter the Key ID generated from the Dashboard
+            "amount": "{{request.session.amt}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "testing.in",
+            "description": "Order Payment",
+            "image": "/static/images/200.jpg", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response){
+                alert("Payment succesfull..");
+            },
+            "prefill": {
+                "name": "HRMS",
+                "email": "hrms12@gmail.com",
+                "contact": "9104613555"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response){
+                alert("Payment Failed! If amount is deducted it will be credited soon.");										        
+        });
+        document.getElementById('rzp-button1').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+</script>      
+<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+<script>
+// Snackbar for user status switcher
+$('#snackbar-user-status label').click(function() { 
+	Snackbar.show({
+		text: 'Your status has been changed!',
+		pos: 'bottom-center',
+		showAction: false,
+		actionText: "Dismiss",
+		duration: 3000,
+		textColor: '#fff',
+		backgroundColor: '#383838'
+	}); 
+}); 
+</script>
+
+{% endblock %}

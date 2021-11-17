@@ -1,0 +1,172 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+<!-- Spacer -->
+<div class="margin-top-90"></div>
+<!-- Spacer / End-->
+
+<!-- Page Content
+================================================== -->
+
+<div class="container">
+	<div class="row">
+		<div class="col-xl-9 col-lg-8 content-left-offset">
+			{% if msg %}
+			<a style="color: blue; text-align: center;">{{ msg }}</a>
+			{% endif %}
+			{% if errmsg %}
+			<a style="color: red; text-align: center;">{{ errmsg }}</a>
+			{% endif %}
+			<form action="{% url 'showRequestsPage' pk=user.id %}" method="POST" id="show-requests-form">{% csrf_token %}
+				<select class="input-text with-border" name="choice" id="choice" onchange="choices()">
+					<option value="All">All Requests</option>
+					<option value="Pending">Pending Requests</option>
+					<option value="Cancelled">Cancelled Requests</option>
+					<option value="Approved">Approved Requests</option>
+				</select>
+				<button type="submit" class="button full-width button-sliding-icon ripple-effect margin-top-10" form="show-requests-form">Search Requests <i class="icon-material-outline-arrow-right-alt"></i></button>
+			</form>
+			<!-- Tasks Container -->
+			<div class="tasks-list-container tasks-grid-layout margin-top-35">
+			{% if request.session.role == "Artist" %}
+				{% for i in requests %}
+					
+					<!-- Task -->
+					<a class="task-listing">
+
+						<!-- Job Listing Details -->
+						<div class="task-listing-details">
+
+							<!-- Details -->
+							<div class="task-listing-description">
+								<h3 class="task-listing-title">Visitor name: {{ i.visitor.Firstname }} {{ i.visitor.Lastname }}</h3>
+								<ul class="task-icons">
+									<li><i class="icon-material-outline-location-on"></i>Vanue: {{ i.Place }}</li>
+								</ul>
+								<ul class="task-icons">
+									<li><i class="icon-material-outline-access-time"></i>Generated Request: {{ i.Request_Date }}</li>
+									<li><i class="icon-material-outline-access-time"></i>Event Date: {{ i.Event_Date }}</li>
+								</ul>
+							</div>
+
+						</div>
+
+						<div class="task-listing-bid">
+							<div class="task-listing-bid-inner">
+								<div class="task-offers">
+									<strong>{{ i.Minimum_Budget }} - {{ i.Maximum_Budget }} INR</strong>
+									<span>Fixed Price</span>
+								</div>
+								Status: <span class="button button-sliding-icon ripple-effect">{{ i.Status }} <i class="icon-material-outline-arrow-right-alt"></i></span>
+							</div>
+							<form action="{% url 'updateRequestsPage' pk=i.id %}" method="POST" id="request-status-form">{% csrf_token %}
+								<select class="input-text with-border" name="status">
+										<option value="Approved">Approve</option>
+										<option value="Pending">Pending</option>
+										<option value="Cancelled">Cancel</option>
+								</select>
+								<button class="button full-width button-sliding-icon ripple-effect margin-top-10" type="submit" form="request-status-form">Submit Response <i class="icon-material-outline-arrow-right-alt"></i></button>
+							</form>
+							
+						</div>
+						<div class="task-listing-bid">
+							<div class="task-listing-bid-inner">
+								Payment Status: <span class="button button-sliding-icon ripple-effect">{{ i.Payment_Status }} <i class="icon-material-outline-arrow-right-alt"></i></span>
+							</div>
+						</div>
+					</a>
+				{% endfor %}
+			{% elif request.session.role == "Visitor" %}
+				{% for i in requests %}
+					
+					<!-- Task -->
+					<a href="single-task-page.html" class="task-listing">
+
+						<!-- Job Listing Details -->
+						<div class="task-listing-details">
+
+							<!-- Details -->
+							<div class="task-listing-description">
+								<h3 class="task-listing-title">Artist name: {{ i.artist.Firstname }} {{ i.artist.Lastname }}</h3>
+								<ul class="task-icons">
+									<li><i class="icon-material-outline-location-on"></i>Vanue: {{ i.Place }}</li>
+								</ul>
+								<ul class="task-icons">
+									<li><i class="icon-material-outline-access-time"></i>Generated Request: {{ i.Request_Date }}</li>
+									<li><i class="icon-material-outline-access-time"></i>Event Date: {{ i.Event_Date }}</li>
+								</ul>
+							</div>
+
+						</div>
+
+						<div class="task-listing-bid">
+							<div class="task-listing-bid-inner">
+								<div class="task-offers">
+									<strong>{{ i.Minimum_Budget }} - {{ i.Maximum_Budget }} INR</strong>
+									<span>Fixed Price</span>
+								</div>
+								<span class="button button-sliding-icon ripple-effect">{{ i.Status }} <i class="icon-material-outline-arrow-right-alt"></i></span>
+							</div>
+						</div>
+						<form action="{% url 'paymentProcessPage' pk=i.id %}" method="POST" id="payment-form">{% csrf_token %}
+							<div class="task-listing-bid">
+								<div class="task-listing-bid-inner">
+									Payment Status: <span class="button button-sliding-icon ripple-effect">{{ i.Payment_Status }} <i class="icon-material-outline-arrow-right-alt"></i></span>
+								</div>
+								<button class="button full-width button-sliding-icon ripple-effect margin-top-10" type="submit" form="payment-form">Start Payment <i class="icon-material-outline-arrow-right-alt"></i></button>
+							</div>
+						</form>
+					</a>
+				{% endfor %}
+			{% endif %}
+
+			</div>
+			<!-- Tasks Container / End -->
+
+		</div>
+	</div>
+</div>
+
+
+{% include 'Visitor/basefooter.html' %}
+{% block footer %}
+{% endblock %}
+<!-- Scripts
+================================================== -->
+
+<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+<script>
+// Snackbar for user status switcher
+$('#snackbar-user-status label').click(function() { 
+	Snackbar.show({
+		text: 'Your status has been changed!',
+		pos: 'bottom-center',
+		showAction: false,
+		actionText: "Dismiss",
+		duration: 3000,
+		textColor: '#fff',
+		backgroundColor: '#383838'
+	}); 
+}); 
+</script>
+
+<!-- Google Autocomplete -->
+<script>
+	function initAutocomplete() {
+		 var options = {
+		  types: ['(cities)'],
+		  // componentRestrictions: {country: "us"}
+		 };
+
+		 var input = document.getElementById('autocomplete-input');
+		 var autocomplete = new google.maps.places.Autocomplete(input, options);
+	}
+</script>
+
+<!-- Google API & Maps -->
+<!-- Geting an API Key: https://developers.google.com/maps/documentation/javascript/get-api-key -->
+<script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
+{% endblock %}

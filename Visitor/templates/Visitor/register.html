@@ -1,0 +1,255 @@
+{% load static %}
+{% include 'Visitor/basecontent.html' %}
+{% block content %}
+{% include 'Visitor/baseheader.html' %}
+{% block header %}
+{% endblock %}
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="gradient">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<h2>Register</h2>
+
+				<!-- Breadcrumbs -->
+				<nav id="breadcrumbs" class="dark">
+					<ul>
+						<li><a href="{% url 'indexPage' %}">Home</a></li>
+						<li>Register</li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Page Content
+================================================== -->
+<div class="container">
+	<div class="row">
+		<div class="col-xl-5 offset-xl-3">
+
+			<div class="login-register-page">
+				<!-- Welcome Text -->
+				<div class="welcome-text">
+					<h3 style="font-size: 26px;">Let's create your account!</h3>
+					<span>Already have an account? <a href="{% url 'loginPage' %}">Log In!</a></span>
+				</div>
+				
+				{% if errmsg %}
+					<a style="color: red; text-align: center;">{{ errmsg }}</a>
+				{% endif %}
+				<!-- Form -->
+				<form action="{% url 'registerUserPage' %}" method="POST" id="register-account-form" enctype="multipart/form-data">{% csrf_token %}
+					<!-- Account Type -->
+					<div class="account-type">
+						<div>
+							<input type="radio" onclick="selectRole();" value="Artist" name="role" id="artist-radio" class="account-type-radio" checked/>
+							<label for="artist-radio" class="ripple-effect-dark"> Artist</label>
+						</div>
+
+						<div>
+							<input type="radio" onclick="selectRole();" value="Visitor" name="role" id="visitor-radio" class="account-type-radio"/>
+							<label for="visitor-radio" class="ripple-effect-dark"> Visitor</label>
+						</div>
+					</div>
+					<!-- <div class="input-with-icon-left" id="ifArtist" style="visibility: visible;">
+						<input type="text" class="input-text with-border" id="profession" name="profession" placeholder="Your Profession" required/>
+					</div> -->
+					<div class="input-with-icon-left">
+						<input type="text" class="input-text with-border" name="fname" placeholder="First name" required/>
+					</div>
+					<div class="input-with-icon-left">
+						<input type="text" class="input-text with-border" name="lname" placeholder="Last name" required/>
+					</div>
+
+					<div class="input-with-icon-left">
+						<i class="icon-material-baseline-mail-outline"></i>
+						<input type="email" class="input-text with-border" name="emailaddr" id="emailaddress-register" placeholder="Email Address" required/>
+					</div>
+
+					<div class="input-with-icon-left" title="Should be at least 8 characters long" data-tippy-placement="bottom">
+						<i class="icon-material-outline-lock"></i>
+						<input type="password" class="input-text with-border" name="password" id="password-register" placeholder="Password" required/>
+					</div>
+
+					<div class="input-with-icon-left">
+						<i class="icon-material-outline-lock"></i>
+						<input type="password" class="input-text with-border" name="password-repeat" id="password-repeat-register" placeholder="Repeat Password" required/>
+					</div>
+					
+					<div class="input-with-icon-left">
+						<select class="input-text with-border" data-size="7" name="country" data-live-search="true">
+							<option selected>Nationality</option>
+							<option value="Argentina">Argentina</option>
+							<option value="Armenia">Armenia</option>
+							<option value="Aruba">Aruba</option>
+							<option value="Australia">Australia</option>
+							<option value="Austria">Austria</option>
+							<option value="Azerbaijan">Azerbaijan</option>
+							<option value="Bahamas">Bahamas</option>
+							<option value="Bahrain">Bahrain</option>
+							<option value="Bangladesh">Bangladesh</option>
+							<option value="Barbados">Barbados</option>
+							<option value="Belarus">Belarus</option>
+							<option value="Belgium">Belgium</option>
+							<option value="Belize">Belize</option>
+							<option value="Benin">Benin</option>
+							<option value="Bermuda">Bermuda</option>
+							<option value="Bhutan">Bhutan</option>
+							<option value="Bulgaria">Bulgaria</option>
+							<option value="Burkina">Burkina Faso</option>
+							<option value="Burundi">Burundi</option>
+							<option value="KH">Cambodia</option>
+							<option value="CM">Cameroon</option>
+							<option value="CA">Canada</option>
+							<option value="CV">Cape Verde</option>
+							<option value="KY">Cayman Islands</option>
+							<option value="CO">Colombia</option>
+							<option value="KM">Comoros</option>
+							<option value="CG">Congo</option>
+							<option value="CK">Cook Islands</option>
+							<option value="CR">Costa Rica</option>
+							<option value="CI">Côte d'Ivoire</option>
+							<option value="HR">Croatia</option>
+							<option value="CU">Cuba</option>
+							<option value="CW">Curaçao</option>
+							<option value="CY">Cyprus</option>
+							<option value="CZ">Czech Republic</option>
+							<option value="DK">Denmark</option>
+							<option value="DJ">Djibouti</option>
+							<option value="DM">Dominica</option>
+							<option value="DO">Dominican Republic</option>
+							<option value="EC">Ecuador</option>
+							<option value="EG">Egypt</option>
+							<option value="GP">Guadeloupe</option>
+							<option value="GU">Guam</option>
+							<option value="GT">Guatemala</option>
+							<option value="GG">Guernsey</option>
+							<option value="GN">Guinea</option>
+							<option value="GW">Guinea-Bissau</option>
+							<option value="GY">Guyana</option>
+							<option value="HT">Haiti</option>
+							<option value="HN">Honduras</option>
+							<option value="HK">Hong Kong</option>
+							<option value="HU">Hungary</option>
+							<option value="IS">Iceland</option>
+							<option value="India">India</option>
+							<option value="ID">Indonesia</option>
+							<option value="NO">Norway</option>
+							<option value="OM">Oman</option>
+							<option value="PK">Pakistan</option>
+							<option value="PW">Palau</option>
+							<option value="PA">Panama</option>
+							<option value="PG">Papua New Guinea</option>
+							<option value="PY">Paraguay</option>
+							<option value="PE">Peru</option>
+							<option value="PH">Philippines</option>
+							<option value="PN">Pitcairn</option>
+							<option value="PL">Poland</option>
+							<option value="PT">Portugal</option>
+							<option value="PR">Puerto Rico</option>
+							<option value="QA">Qatar</option>
+							<option value="RE">Réunion</option>
+							<option value="RO">Romania</option>
+							<option value="RU">Russian Federation</option>
+							<option value="RW">Rwanda</option>
+							<option value="SZ">Swaziland</option>
+							<option value="SE">Sweden</option>
+							<option value="CH">Switzerland</option>
+							<option value="TR">Turkey</option>
+							<option value="TM">Turkmenistan</option>
+							<option value="TV">Tuvalu</option>
+							<option value="UG">Uganda</option>
+							<option value="UA">Ukraine</option>
+							<option value="GB">United Kingdom</option>
+							<option value="USA">United States</option>
+							<option value="UY">Uruguay</option>
+							<option value="UZ">Uzbekistan</option>
+							<option value="YE">Yemen</option>
+							<option value="ZM">Zambia</option>
+							<option value="ZW">Zimbabwe</option>
+						</select>
+					</div>
+					<div class="input-with-icon-left">
+						<input type="number" class="input-text with-border" name="mobileno" placeholder="Mobile Number" required/>
+					</div>
+					
+					<div class="input-with-icon-left">
+						<input type="date" class="input-text with-border" name="bdate" placeholder="Birth Date" required/>
+					</div>
+					<div class="input-with-icon-left">
+						<input type="text" class="input-text with-border" name="currentaddr" placeholder="Current Address" required/>
+					</div>
+					<div class="input-with-icon-left">
+						<input type="text" class="input-text with-border" name="permanentaddr" placeholder="Permanent Address" required/>
+					</div>
+
+					<div class="account-type">
+						<div>
+							<input type="radio" value="Male" name="gender" id="male-radio" class="account-type-radio" checked/>
+							<label for="male-radio" class="ripple-effect-dark"> Male</label>
+						</div>
+
+						<div>
+							<input type="radio" value="Female" name="gender" id="female-radio" class="account-type-radio"/>
+							<label for="female-radio" class="ripple-effect-dark"> Female</label>
+						</div>
+
+						<div>
+							<input type="radio" value="Other" name="gender" id="other-radio" class="account-type-radio"/>
+							<label for="other-radio" class="ripple-effect-dark"> Other</label>
+						</div>
+					</div>
+					<div class="input-with-icon-left">
+						<input type="file" class="input-text with-border" name="profile" required/>
+					</div>
+						
+					<!-- Button -->
+					<button type="submit" class="button full-width button-sliding-icon ripple-effect margin-top-10" form="register-account-form">Register <i class="icon-material-outline-arrow-right-alt"></i></button>
+				</form>
+				
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- Spacer -->
+<div class="margin-top-70"></div>
+<!-- Spacer / End-->
+{% include 'Visitor/basefooter.html' %}
+{% block footer %}
+{% endblock %}
+<!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
+<script>
+// Snackbar for user status switcher
+$('#snackbar-user-status label').click(function() { 
+	Snackbar.show({
+		text: 'Your status has been changed!',
+		pos: 'bottom-center',
+		showAction: false,
+		actionText: "Dismiss",
+		duration: 3000,
+		textColor: '#fff',
+		backgroundColor: '#383838'
+	}); 
+}); 
+</script>
+<!-- <script>
+	function selectRole(){
+		if (document.getElementById('artist-radio').checked){
+			document.getElementById('profession').style.display='block';
+		}
+		else {
+			document.getElementById('profession').style.display='none';
+		}
+	}
+</script> -->
+
+{% endblock %}
